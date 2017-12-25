@@ -13,3 +13,5 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 .idea/workspace.xml
+Sandbox/out/production/classes/Hello.class
+Sandbox/out/production/classes/ru/stqa/pft/sandbox/Hello.class
