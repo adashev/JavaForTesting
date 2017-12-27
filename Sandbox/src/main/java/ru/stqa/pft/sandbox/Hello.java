@@ -3,21 +3,18 @@ package ru.stqa.pft.sandbox;
 public class Hello {
 
     public static void main(String[] args) {
-        hello("world");
-        hello("user");
-        hello("dima");
+        Point point1 = new Point(2, 3);
+        Point point2 = new Point(4, 5);
 
-        Square s = new Square(10);
-        //double pl = area(len);
-        System.out.println("Площадь квадрата со стороной " + s.l + " = " + s.area());
+        double dist = distance(point1, point2);
+        System.out.println("расстояние между точками равно " + dist);
 
-        //double a = 5;
-        //double b = 4;
-        Rectangle restang = new Rectangle(5, 6);
-        System.out.println("Площадь прямоуг. со сторонами " + restang.a + " и " + restang.b + " = " + restang.area());
     }
 
-    public static void hello(String somebody) {
-        System.out.println("Hello, " + somebody + "!");
+    public static double distance(Point p1, Point p2){
+        double deltax = p2.x - p1.x;
+        double deltay = p2.y - p1.y;
+        double dist = Math.sqrt(deltax*deltax + deltay*deltay);
+        return dist;
     }
 }
