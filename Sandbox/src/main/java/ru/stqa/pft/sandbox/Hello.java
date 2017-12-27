@@ -7,25 +7,17 @@ public class Hello {
         hello("user");
         hello("dima");
 
-        double l = 5;
+        Square s = new Square(10);
         //double pl = area(len);
-        System.out.println("Площадь квадрата со стороной " + l + " = " + area(l));
+        System.out.println("Площадь квадрата со стороной " + s.l + " = " + s.area());
 
-        double a = 5;
-        double b = 4;
-        System.out.println("Площадь прямоуг. со сторонами " + a + " и " + b + " = " + area(a, b));
-
+        //double a = 5;
+        //double b = 4;
+        Rectangle restang = new Rectangle(5, 6);
+        System.out.println("Площадь прямоуг. со сторонами " + restang.a + " и " + restang.b + " = " + restang.area());
     }
 
     public static void hello(String somebody) {
         System.out.println("Hello, " + somebody + "!");
-    }
-
-    public static double area(double len) {
-        return len * len;
-    }
-
-    public static double area(double a, double b) {
-        return a * b;
     }
 }
