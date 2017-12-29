@@ -8,7 +8,7 @@ public class Point {
     this.y2 = y;
   }
 
-  public double distance(double x1, double y1){ //первая точка - передаётся в него как параметр
+  public double distance(double x1, double y1){ //первая точка передаётся в метод как параметр
     double deltax = this.x2 - x1;
     double deltay = this.y2 - y1;
     double dist = Math.sqrt(deltax*deltax + deltay*deltay);
