@@ -6,7 +6,7 @@ public class Hello {
         Point point2 = new Point(4, 5);
         Point point1 = new Point(2, 3);
 
-        double dist = point2.distance(point1.x, point1.y);
+        double dist = point2.distance(point1);
         System.out.println("расстояние между точками равно " + dist);
     }
 }
