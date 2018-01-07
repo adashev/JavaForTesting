@@ -6,7 +6,7 @@ import ru.stqa.pft.addressbook.model.GroupData;
 
 public class GroupHelper {
 
-    FirefoxDriver wd;
+    private FirefoxDriver wd;
     public GroupHelper(FirefoxDriver wd) {
         this.wd = wd;
     }
