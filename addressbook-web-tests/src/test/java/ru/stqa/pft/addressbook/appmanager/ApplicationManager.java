@@ -27,8 +27,6 @@ public class ApplicationManager {
         wd.quit();
     }
 
-    //public void gotoAddContactPage() {       wd.findElement(By.linkText("add new")).click(); }
-
     public GroupHelper getGroupHelper() {
         return groupHelper;
     }
