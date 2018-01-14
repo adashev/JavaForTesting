@@ -1,19 +1,21 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class NavigationHelper extends HelperBase {
+public class NavigationHelper {
 
-    public NavigationHelper(WebDriver wd) {
-        super(wd);
+    private FirefoxDriver wd;
+
+    public NavigationHelper(FirefoxDriver wd) {
+
+        this.wd = wd;
     }
 
-    public void gotoGroupPage() {
-       click(By.linkText("groups"));
-    }
+
+    public void gotoGroupPage() {wd.findElement(By.linkText("groups")).click();}
 
     public void gotoAddContactPage() {
-       click(By.linkText("add new"));
+        wd.findElement(By.linkText("add new")).click();
     }
 }

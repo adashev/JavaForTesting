@@ -1,36 +1,39 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-public class ContactHelper extends HelperBase {
+public class ContactHelper {
 
-    public ContactHelper(WebDriver wd) {
-        super(wd);
+    private FirefoxDriver wd;
+
+    public ContactHelper(FirefoxDriver wd) {
+        this.wd = wd;
     }
 
-    public void submitContactCreation() {  click(By.xpath("//div[@id='content']/form/input[21]"));
+    public void submitContactCreation() {
+        wd.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
     }
 
     public void fillContactForm(ContactData contact) {
-        type(By.name("firstname"),contact.getFirstname());
-        type(By.name("lastname"),contact.getLastname());
-        type(By.name("nickname"),contact.getNickname());
-        type(By.name("address"),contact.getAddress());
-        type(By.name("mobile"), contact.getMobile());
-        type(By.name("email"), contact.getEmail());
-    }
-
-    public void initContactModification() {
-        click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
-    }
-
-    public void updateContactCreation() {
-        click(By.xpath("//div[@id='content']/form[1]/input[22]"));
-    }
-
-    public void deleteSelectedContact() {
-        click(By.xpath("//div[@id='content']/form[2]/input[2]"));
+        wd.findElement(By.name("firstname")).click();
+        wd.findElement(By.name("firstname")).clear();
+        wd.findElement(By.name("firstname")).sendKeys(contact.getFirstname());
+        wd.findElement(By.name("lastname")).click();
+        wd.findElement(By.name("lastname")).clear();
+        wd.findElement(By.name("lastname")).sendKeys(contact.getLastname());
+        wd.findElement(By.name("nickname")).click();
+        wd.findElement(By.name("nickname")).clear();
+        wd.findElement(By.name("nickname")).sendKeys(contact.getNickname());
+        wd.findElement(By.name("address")).click();
+        wd.findElement(By.name("address")).clear();
+        wd.findElement(By.name("address")).sendKeys(contact.getAddress());
+        wd.findElement(By.name("mobile")).click();
+        wd.findElement(By.name("mobile")).clear();
+        wd.findElement(By.name("mobile")).sendKeys(contact.getMobile());
+        wd.findElement(By.name("email")).click();
+        wd.findElement(By.name("email")).clear();
+        wd.findElement(By.name("email")).sendKeys(contact.getEmail());
     }
 }
