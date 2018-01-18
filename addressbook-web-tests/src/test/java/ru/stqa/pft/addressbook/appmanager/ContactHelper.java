@@ -19,8 +19,9 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"),contact.getFirstname());
         type(By.name("lastname"),contact.getLastname());
 
-        if (creation){
+        if (creation){ //проверка карточки (создание или изменение). При изменении нет раскр.списка групп.Лекция 3.8
             new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contact.getGroup());
+            //выбираем значение в раскрыв. списке групп
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -40,5 +41,14 @@ public class ContactHelper extends HelperBase {
 
     public void deleteSelectedContact() {
         click(By.xpath("//div[@id='content']/form[2]/input[2]"));
+    }
+
+    public void createContact (ContactData contact, boolean creation){
+        fillContactForm (contact, creation);
+        submitContactCreation();
+    }
+
+    public boolean isThereContact() {
+        return isElementPresent(By.name("selected[]"));
     }
 }

@@ -8,7 +8,8 @@ public class GroupCreationTests extends TestBase {
     @Test
     public void testGroupCreation() {
         app.getNavigationHelper().gotoGroupPage();
-        app.getGroupHelper().createGroup(new GroupData("test10", null, null));
+        app.getGroupHelper().createGroup(new GroupData("test1", null, null));
+        // null подставляем, потому что хотим оставить в этих полях знач-я по умолчанию (лекция 3.5)
 
     }
 
