@@ -13,7 +13,7 @@ public class GroupDeletionTests extends TestBase {
         if (! app.getGroupHelper().isThereAGroup()){//проверка: если ни одной группы нет, то создать группу
             app.getGroupHelper().createGroup(new GroupData("test1", null, null));
         }
-        app.getGroupHelper().selectGroup();
+        app.getGroupHelper().selectGroup(before - 1);//параметр before - 1 добавляем в 4.4, чтобы удалять не первую, а последнюю группу в списке
         app.getGroupHelper().deleteSelectedGroups();
         app.getGroupHelper().returnGroupPage();
         int after = app.getGroupHelper().getGroupCount(); //кол-во групп ПОСЛЕ удаления данной группы (добавлено в 4.3)

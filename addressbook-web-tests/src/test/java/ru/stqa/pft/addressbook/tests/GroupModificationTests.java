@@ -13,7 +13,7 @@ public class GroupModificationTests extends TestBase {
         if (!app.getGroupHelper().isThereAGroup()) {
             app.getGroupHelper().createGroup(new GroupData("test10", null, null));
         }
-        app.getGroupHelper().selectGroup();
+        app.getGroupHelper().selectGroup(before - 1);//параметр before - 1 добавляем в 4.4, чтобы изменять не первую, а последнюю группу в списке
         app.getGroupHelper().initGroupModification();
         app.getGroupHelper().fillGroupForm(new GroupData("test1a", "test20", "test30"));
         app.getGroupHelper().submitGroupModification();
