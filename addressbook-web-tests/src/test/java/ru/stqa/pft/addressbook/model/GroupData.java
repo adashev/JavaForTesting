@@ -22,4 +22,26 @@ public class GroupData {
     public String getFooter() {
         return footer;
     }
+
+    @Override // добавили в 4.6 в контексте сравнение списков групп в тесте Удаления(с помощью IDE)
+    public String toString() {
+        return "GroupData{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+    @Override // добавили в 4.6 в контексте сравнение списков групп в тесте Удаления (с помощью IDE)
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupData groupData = (GroupData) o;
+
+        return name != null ? name.equals(groupData.name) : groupData.name == null;
+    }
+
+    @Override // добавили в 4.6 в контексте сравнение списков групп в тесте Удаления (с помощью IDE). В 4.6 не используется
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
 }
