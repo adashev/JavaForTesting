@@ -2,6 +2,8 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
+
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,7 +30,11 @@ public class GroupModificationTests extends TestBase {
 
         before.remove(before.size() - 1);//удаляем элемент модифицированный через UI из нашего списка (4.7)
         before.add(group);//вместо удаленного элемента добавляем новый модифицированный (4.7)
-        Assert.assertEquals(new HashSet(before), new HashSet(after));//сверка списков групп(добавлено в 4.7)
-        //метод HashSet для преобразования списка во множество добавлен в начале 4.7
+
+        Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());//в 4.10 учимся сортировать группы по их id
+        before.sort(byId);//в 4.10
+        after.sort(byId);//в 4.10
+        //Assert.assertEquals(new HashSet(before), new HashSet(after));//сверка списков групп(добав. в 4.8). HashSet для преобразования списка во множество добавлен в начале 4.7
+        Assert.assertEquals(before, after);//в 4.10 отказались от HashSet, т.к. списки отсортированы по id
     }
 }

@@ -3,6 +3,8 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
+
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,13 +30,18 @@ public class GroupCreationTests extends TestBase {
             }
         }*/
 
-        //в 4.9 добавили компоратор (сравниватель)
+        //в 4.9 добавили компоратор (сравниватель). Компоратор - описание правил сравненеия объектов
         //Comparator<? super GroupData> byId = (Comparator<GroupData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        //int max1 = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();//в 4.9 добавили это выражение, вычисляющее макс-ый объект
-        //и получение его идентификатора
-        group.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());// присв-ем найденный max в качес. инденти-ра новой группы
+    //int max1 = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();//в 4.9 добавили это вычисление макс-ого объекта
+    //и получение его идентификатора
+        //group.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());// присв-ем найденный max в кач. инденф-ра новой группы
         before.add(group);//добавлено в 4.8 - добавляем в список before созданную группу
-        Assert.assertEquals(new HashSet(before), new HashSet(after));//сверка списков групп(добавлено в 4.8)
+
+        Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());//в 4.10 учимся сортировать группы по их id
+        before.sort(byId);//в 4.10
+        after.sort(byId);//в 4.10
+        //Assert.assertEquals(new HashSet(before), new HashSet(after));//сверка списков групп(добавлено в 4.8)
+        Assert.assertEquals(before, after);//в 4.10 отказались от HashSet (приведение списка ко множеству), т.к. списки отсортированы по id
     }
 
 }
