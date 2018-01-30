@@ -59,9 +59,9 @@ public class GroupHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-    public int getGroupCount() {
+    public int getGroupCount() {//создана в 4.3
         return wd.findElements(By.name("selected[]")).size(); //считает текущее число групп на страницке (напр., в 4.3)
-    }
+    } //т.е. все теги, у кот. есть атрибут name="selected[]"
 
     public List<GroupData> getGroupList() {  //добавили в 4.5
         List<GroupData> groups = new ArrayList<GroupData>();
