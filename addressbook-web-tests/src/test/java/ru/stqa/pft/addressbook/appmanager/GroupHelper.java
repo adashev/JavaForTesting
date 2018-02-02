@@ -35,32 +35,26 @@ public class GroupHelper extends HelperBase {
     public void deleteSelectedGroups() {
         click(By.xpath("//div[@id='content']/form/input[5]"));
     }
-
     public void selectGroup(int index) { //параметр int index добавили в 4.4
         wd.findElements(By.name("selected[]")).get(index).click();
     }
-
     public void initGroupModification() {
         click(By.name("edit"));
     }
-
     public void submitGroupModification() {
         click(By.name("update"));
     }
-
     public void createGroup(GroupData group) {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
         returnGroupPage();
     }
-
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }
-
     public int getGroupCount() {//создана в 4.3
-        return wd.findElements(By.name("selected[]")).size(); //считает текущее число групп на страницке (напр., в 4.3)
+        return wd.findElements(By.name("selected[]")).size(); //считает текущее число групп на странице (напр., в 4.3)
     } //т.е. все теги, у кот. есть атрибут name="selected[]"
 
     public List<GroupData> getGroupList() {  //добавили в 4.5
