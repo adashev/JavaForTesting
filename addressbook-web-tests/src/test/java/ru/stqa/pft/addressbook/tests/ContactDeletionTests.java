@@ -26,6 +26,11 @@ public class ContactDeletionTests extends TestBase {
     //int after = app.getContactHelper().getContactCount(); //кол-во контактов ПОСЛЕ удаления (в рамках 4.3)
     List<ContactData> after = app.getContactHelper().getContactList();//считываем список контактов на странице после удаления (4.5)
     Assert.assertEquals(after.size(), before.size() - 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
-  }
 
+    before.remove(before.size() - 1);
+      //for (int i = 0; i < after.size(); i++) { //добавили в 4.6 последовательную сверку всех элементов списков before и after
+      //хотим убедиться, что списки полностью одинаковы
+    Assert.assertEquals(before, after);
+      //}
+  }
 }
