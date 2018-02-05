@@ -24,7 +24,7 @@ public class GroupCreationTests extends TestBase {
         Assert.assertEquals(after.size(), before.size() + 1);//проверка нового кол-ва групп (4.3; в 4.5 int поменяли на списки)
 
         /*int max = 0;
-        for (GroupData g : after){ //в 4.8 добавили цикл поиска максимального id (ищем группу, кот. только что добавили)
+        for (GroupData g : after){ //в 4.8 добавили цикл поиска максимального id в списке групп ПОСЛЕ добавления новой
             if (g.getId() > max){
                 max = g.getId();
             }
