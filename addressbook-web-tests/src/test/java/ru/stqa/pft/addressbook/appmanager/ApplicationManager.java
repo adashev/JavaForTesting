@@ -29,7 +29,7 @@ public class ApplicationManager {
             wd = new InternetExplorerDriver();
         }
         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        //при time = 0 ytzdyst ожидания выключены
+        //при time = 0 неявные ожидания выключены
 
         wd.get("http://localhost/addressbook");
         groupHelper = new GroupHelper(wd);
