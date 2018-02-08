@@ -44,12 +44,22 @@ public class GroupHelper extends HelperBase {
     public void submitGroupModification() {
         click(By.name("update"));
     }
+
     public void createGroup(GroupData group) {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
         returnGroupPage();
     }
+
+    public void modifyGroup(int index, GroupData group) {// добавили в 5.2
+        selectGroup(index);//параметр before - 1 добавлbkb в 4.4, чтобы изменять не первую, а последнюю группу в списке
+        initGroupModification();
+        fillGroupForm(group);
+        submitGroupModification();
+        returnGroupPage();
+    }
+
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }

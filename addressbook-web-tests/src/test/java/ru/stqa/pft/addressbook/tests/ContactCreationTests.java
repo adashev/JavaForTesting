@@ -9,9 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
-    @Test(enabled = false)
+    @Test
     public void testContactCreation() {
         app.getNavigationHelper().gotoHomePage();
+
         //int before = app.getContactHelper().getContactCount(); //кол-во контактов ДО создания нового (в рамках 4.3)
         List<ContactData> before = app.getContactHelper().getContactList();//считываем текущий список контактов на страницы до создания нового (4.5)
         app.getNavigationHelper().gotoAddContactPage();
@@ -23,8 +24,6 @@ public class ContactCreationTests extends TestBase {
         //int after = app.getContactHelper().getContactCount(); //кол-во контактов ПОСЛЕ создания нового (в рамках 4.3)
         List<ContactData> after = app.getContactHelper().getContactList();//считываем текущий список контактов на страницы после создания нового (4.5)
         Assert.assertEquals(after.size(), before.size() + 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
-
-
         /*int max = 0;
         for (ContactData g : after){ //в 4.8 добавили цикл поиска максимального id в списке контактов ПОСЛЕ добавления нового
             if (g.getId() > max){

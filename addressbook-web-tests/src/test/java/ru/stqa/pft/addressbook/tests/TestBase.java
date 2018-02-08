@@ -14,7 +14,7 @@ public class TestBase {
     public void setUp() throws Exception {
         app.init();
     }
-    @AfterSuite // вместо @BeforeMethod в 5.1
+    //@AfterSuite // вместо @BeforeMethod в 5.1
     public void tearDown() {
         app.stop();
     }

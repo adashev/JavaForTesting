@@ -1,20 +1,24 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import java.util.List;
 
 public class ContactDeletionTests extends TestBase {
-
-  @Test(enabled = false)
-  public void testContactDeletion() {
+  @BeforeMethod //Добавили в 5.2
+  public void ensurePreconditions(){
     app.getNavigationHelper().gotoHomePage();
-    if (! app.getContactHelper().isThereContact()){
-        app.getNavigationHelper().gotoAddContactPage();
-  app.getContactHelper().createContact(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
-        app.getNavigationHelper().gotoHomePage();
+    if (! app.getContactHelper().isThereContact()) {
+      app.getNavigationHelper().gotoAddContactPage();
+      app.getContactHelper().createContact(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
+      app.getNavigationHelper().gotoHomePage();
     }
+  }
+
+  @Test
+  public void testContactDeletion() {
     //int before = app.getContactHelper().getContactCount(); //кол-во контактов ДО удаления (в рамках 4.3)
     List<ContactData> before = app.getContactHelper().getContactList();//считываем список контактов на страницы до удаления(4.5)
     //app.getContactHelper().initContactModification(); //вариант удаления контакта через заход в его карточку
