@@ -45,19 +45,25 @@ public class GroupHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void createGroup(GroupData group) {
+    public void create(GroupData group) {
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
         returnGroupPage();
     }
 
-    public void modifyGroup(int index, GroupData group) {// добавили в 5.2
+    public void modify(int index, GroupData group) {// добавили в 5.2
         selectGroup(index);//параметр before - 1 добавлbkb в 4.4, чтобы изменять не первую, а последнюю группу в списке
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
         returnGroupPage();
+    }
+
+    public void delete(int index) {
+       selectGroup(index);//параметр before - 1 добавляем в 4.4, чтобы удалять не первую, а последнюю группу в списке
+       deleteSelectedGroups();
+       returnGroupPage();
     }
 
     public boolean isThereAGroup() {
@@ -67,7 +73,7 @@ public class GroupHelper extends HelperBase {
         return wd.findElements(By.name("selected[]")).size(); //считает текущее число групп на странице (напр., в 4.3)
     } //т.е. все теги, у кот. есть атрибут name="selected[]"
 
-    public List<GroupData> getGroupList() {  //добавили в 4.5
+    public List<GroupData> list() {  //добавили в 4.5
         List<GroupData> groups = new ArrayList<GroupData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {

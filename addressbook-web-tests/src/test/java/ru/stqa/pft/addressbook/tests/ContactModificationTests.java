@@ -10,25 +10,25 @@ import java.util.List;
 public class ContactModificationTests extends TestBase {
   @BeforeMethod //Добавили в 5.2
   public void ensurePreconditions(){
-    app.getNavigationHelper().gotoHomePage();
-    if (! app.getContactHelper().isThereContact()) {
-      app.getNavigationHelper().gotoAddContactPage();
-      app.getContactHelper().createContact(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
-      app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();// переименовка методов сделана в 5.3
+    if (app.contact().list().size() == 0) {
+      app.goTo().gotoAddContactPage();
+      app.contact().create(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
+      app.goTo().homePage();
     }
   }
 
   @Test
   public void testContactModification() {
-    //int before = app.getContactHelper().getContactCount(); //кол-во контактов ДО модифик. (в рамках 4.3)
-    List<ContactData> before = app.getContactHelper().getContactList();//считываем список контактов на страницы до модиф.(4.5)
+    //int before = app.contact().getContactCount(); //кол-во контактов ДО модифик. (в рамках 4.3)
+    List<ContactData> before = app.contact().list();//считываем список контактов на страницы до модиф.(4.5)
     int index = before.size() - 1;
     ContactData contact = new ContactData(before.get(index).getId(),"Dom1", "x1", null,"M.1", "59", "@ru");// вынесли из fillContactForm в 4.7
 
-    app.getContactHelper().modifyContact(index, contact);//свели 5 методов в один в 5.2
+    app.contact().modify(index, contact);//свели 5 методов в один в 5.2
 
-    //int after = app.getContactHelper().getContactCount(); //кол-во контактов ПОСЛЕ модифик. (в рамках 4.3)
-    List<ContactData> after = app.getContactHelper().getContactList();//считываем список контактов на странице после модиф. (4.5)
+    //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ модифик. (в рамках 4.3)
+    List<ContactData> after = app.contact().list();//считываем список контактов на странице после модиф. (4.5)
     Assert.assertEquals(after.size(), before.size());//проверка кол-ва контактов после модифик.(в рамках 4.3)
     before.remove(index);//удаляем элемент модифицированный через UI из нашего списка (4.7)
     before.add(contact);//вместо удаленного элемента добавляем новый модифицированный (4.7)

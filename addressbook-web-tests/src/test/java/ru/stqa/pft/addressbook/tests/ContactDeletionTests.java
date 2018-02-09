@@ -9,28 +9,28 @@ import java.util.List;
 public class ContactDeletionTests extends TestBase {
   @BeforeMethod //Добавили в 5.2
   public void ensurePreconditions(){
-    app.getNavigationHelper().gotoHomePage();
-    if (! app.getContactHelper().isThereContact()) {
-      app.getNavigationHelper().gotoAddContactPage();
-      app.getContactHelper().createContact(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
-      app.getNavigationHelper().gotoHomePage();
+    app.goTo().homePage();
+    if (app.contact().list().size() == 0) {
+      app.goTo().gotoAddContactPage();
+      app.contact().create(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
+      app.goTo().homePage();
     }
   }
 
   @Test
   public void testContactDeletion() {
-    //int before = app.getContactHelper().getContactCount(); //кол-во контактов ДО удаления (в рамках 4.3)
-    List<ContactData> before = app.getContactHelper().getContactList();//считываем список контактов на страницы до удаления(4.5)
-    //app.getContactHelper().initContactModification(); //вариант удаления контакта через заход в его карточку
+    //int before = app.contact().getContactCount(); //кол-во контактов ДО удаления (в рамках 4.3)
+    List<ContactData> before = app.contact().list();//считываем список контактов на страницы до удаления(4.5)
+    //app.contact().initContactModification(); //вариант удаления контакта через заход в его карточку
 
-    app.getContactHelper().selectContact(before.size() - 1);//вариант удаления контакта со списка контактов
-    app.getContactHelper().deleteSelectedContact();
-    app.getNavigationHelper().gotoHomePage();
-    //int after = app.getContactHelper().getContactCount(); //кол-во контактов ПОСЛЕ удаления (в рамках 4.3)
-    List<ContactData> after = app.getContactHelper().getContactList();//считываем список контактов на странице после удаления (4.5)
+    int index = before.size() - 1;
+    app.contact().delete(index);
+    app.goTo().homePage();
+    //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ удаления (в рамках 4.3)
+    List<ContactData> after = app.contact().list();//считываем список контактов на странице после удаления (4.5)
     Assert.assertEquals(after.size(), before.size() - 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
 
-    before.remove(before.size() - 1);
+    before.remove(index);
       //for (int i = 0; i < after.size(); i++) { //добавили в 4.6 последовательную сверку всех элементов списков before и after
       //хотим убедиться, что списки полностью одинаковы
     Assert.assertEquals(before, after);

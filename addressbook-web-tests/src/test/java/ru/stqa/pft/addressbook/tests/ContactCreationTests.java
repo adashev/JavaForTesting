@@ -5,24 +5,21 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
     @Test
     public void testContactCreation() {
-        app.getNavigationHelper().gotoHomePage();
+        app.goTo().homePage();
 
-        //int before = app.getContactHelper().getContactCount(); //кол-во контактов ДО создания нового (в рамках 4.3)
-        List<ContactData> before = app.getContactHelper().getContactList();//считываем текущий список контактов на страницы до создания нового (4.5)
-        app.getNavigationHelper().gotoAddContactPage();
-
+        //int before = app.contact().getContactCount(); //кол-во контактов ДО создания нового (в рамках 4.3)
+        List<ContactData> before = app.contact().list();//считываем текущий список контактов на страницы до создания нового (4.5)
+        app.goTo().gotoAddContactPage();
         ContactData contact = new ContactData("creat8", "О", "gr1", "Еж, 1", "4-0", "m@ru");//в 4.8
-        app.getContactHelper().createContact(contact,true);
-        app.getNavigationHelper().gotoHomePage();
-
-        //int after = app.getContactHelper().getContactCount(); //кол-во контактов ПОСЛЕ создания нового (в рамках 4.3)
-        List<ContactData> after = app.getContactHelper().getContactList();//считываем текущий список контактов на страницы после создания нового (4.5)
+        app.contact().create(contact,true);
+        app.goTo().homePage();
+        //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ создания нового (в рамках 4.3)
+        List<ContactData> after = app.contact().list();//считываем текущий список контактов на страницы после создания нового (4.5)
         Assert.assertEquals(after.size(), before.size() + 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
         /*int max = 0;
         for (ContactData g : after){ //в 4.8 добавили цикл поиска максимального id в списке контактов ПОСЛЕ добавления нового
