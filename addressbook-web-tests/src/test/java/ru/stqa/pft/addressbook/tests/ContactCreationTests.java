@@ -15,23 +15,16 @@ public class ContactCreationTests extends TestBase {
         //int before = app.contact().getContactCount(); //кол-во контактов ДО создания нового (в рамках 4.3)
         List<ContactData> before = app.contact().list();//считываем текущий список контактов на страницы до создания нового (4.5)
         app.goTo().gotoAddContactPage();
-        ContactData contact = new ContactData("creat8", "О", "gr1", "Еж, 1", "4-0", "m@ru");//в 4.8
+        ContactData contact = new ContactData()
+                .withFirstname("создаем").withLastname("О").withGroup("gr1")
+                .withAddress("Е, 1").withMobile("4-0").withEmail("@ru");
         app.contact().create(contact,true);
         app.goTo().homePage();
         //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ создания нового (в рамках 4.3)
         List<ContactData> after = app.contact().list();//считываем текущий список контактов на страницы после создания нового (4.5)
         Assert.assertEquals(after.size(), before.size() + 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
-        /*int max = 0;
-        for (ContactData g : after){ //в 4.8 добавили цикл поиска максимального id в списке контактов ПОСЛЕ добавления нового
-            if (g.getId() > max){
-                max = g.getId();
-            }
-        }*/
-        //добавлено по мотивам 4.9. Создаем объект анонимного класса
-        //Comparator<? super ContactData> byId = (Comparator<ContactData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        //int max1 = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId(); //добавлено по мотивам 4.9. Исполь-ем анонимную функцию
 
-        contact.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId()); //добавлено по мотивам 4.8
+        contact.withId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId()); //добавлено по мотивам 4.8
         //after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId() - лямда-выражение реализовано по мотивам 4.9
         before.add(contact);
         Comparator<? super ContactData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());// по мотивам 4.10

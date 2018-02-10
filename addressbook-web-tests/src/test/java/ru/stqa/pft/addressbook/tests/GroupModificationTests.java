@@ -13,7 +13,7 @@ public class GroupModificationTests extends TestBase {
     public void ensurePreconditions(){
         app.goTo().groupPage(); // вместо .getNavigationHelper().gotoGroupPage() в 5.3
         if (app.group().list().size() == 0) {
-            app.group().create(new GroupData("test1", null, null));
+            app.group().create(new GroupData().withName("test1"));
         }
     }
     @Test
@@ -22,7 +22,8 @@ public class GroupModificationTests extends TestBase {
         //int before = app.group().getGroupCount(); //кол-во групп ДО модификации группы (добавлено 4.3; в 4.5 перенесено после проверки предусловий)
         List<GroupData> before = app.group().list();//считываем текущий список групп на странице до удаления группы (4.5)
         int index = before.size() - 1;
-        GroupData group = new GroupData(before.get(index).getId(), "test1", "testMOD", "testMOD");// в 4.7 вынесли new GroupData из fillGroupForm
+        GroupData group = new GroupData()
+                .withId(before.get(index).getId()).withName("test1").withHeader("tMOD").withFooter("tMOD");
 
         app.group().modify(index, group);//свели 5 методов в один в 5.2
 

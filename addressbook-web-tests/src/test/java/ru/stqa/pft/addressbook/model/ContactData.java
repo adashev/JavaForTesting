@@ -1,42 +1,46 @@
 package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
-    private int id; // добавлен по мотивам 4.7. Тип изменен на int в 4.8
-    private final String firstname;
-    private final String lastname;
+    private int id = Integer.MAX_VALUE; // добавлен по мотивам 4.7. Тип изменен на int в 4.8
+    private String firstname;
+    private String lastname;
     private String group;
-    private final String address;
-    private final String mobile;
-    private final String email;
+    private String address;
+    private String mobile;
+    private String email;
 
-    public ContactData(int id, String firstname, String lastname, String group, String address, String mobile, String email) {
-        this.id = id; // добавлен по мотивам 4.7
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
+    public ContactData withFirstname(String firstname) {
         this.firstname = firstname;
+        return this;
+    }
+    public ContactData withLastname(String lastname) {
         this.lastname = lastname;
+        return this;
+    }
+    public ContactData withGroup(String group) {
         this.group = group;
+        return this;
+    }
+    public ContactData withAddress(String address) {
         this.address = address;
+        return this;
+    }
+    public ContactData withMobile(String mobile) {
         this.mobile = mobile;
+        return this;
+    }
+    public ContactData withEmail(String email) {
         this.email = email;
+        return this;
     }
 
-    public ContactData(String firstname, String lastname, String group, String address, String mobile, String email) {
-        // второй конструктор (без id добавлен в 4.7)
-        this.id = Integer.MAX_VALUE;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.group = group;
-        this.address = address;
-        this.mobile = mobile;
-        this.email = email;
-    }
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getFirstname() {
         return firstname;
     }

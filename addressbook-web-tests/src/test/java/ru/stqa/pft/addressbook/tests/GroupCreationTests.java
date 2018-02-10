@@ -15,7 +15,7 @@ public class GroupCreationTests extends TestBase {
         List<GroupData> before = app.group().list();//считываем текущий список групп на странице до созданий новой группы (4.5)
         //int before = app.group().getGroupCount(); //кол-во групп ДО создания новой данной группы (4.3)
 
-        GroupData group = new GroupData("gr1", null, null);//вынесли из create() в 4.8
+        GroupData group = new GroupData().withName("gr1");
         app.group().create(group);// null подставляем, т.к. хотим оставить в этих полях знач-я по умолч. (лекция 3.5)
 
         //int after = app.group().getGroupCount(); //кол-во групп ПОСЛЕ создания новой данной группы (4.3)

@@ -13,7 +13,9 @@ public class ContactModificationTests extends TestBase {
     app.goTo().homePage();// переименовка методов сделана в 5.3
     if (app.contact().list().size() == 0) {
       app.goTo().gotoAddContactPage();
-      app.contact().create(new ContactData("z", "x", "test1", "mm", "7-8", "d@ru"), true);
+      app.contact().create(new ContactData().withFirstname("создаем").withLastname("x")
+              .withGroup("test1").withAddress("Adres")
+              .withMobile("7-8").withEmail("d@ru"), true);
       app.goTo().homePage();
     }
   }
@@ -23,9 +25,10 @@ public class ContactModificationTests extends TestBase {
     //int before = app.contact().getContactCount(); //кол-во контактов ДО модифик. (в рамках 4.3)
     List<ContactData> before = app.contact().list();//считываем список контактов на страницы до модиф.(4.5)
     int index = before.size() - 1;
-    ContactData contact = new ContactData(before.get(index).getId(),"Dom1", "x1", null,"M.1", "59", "@ru");// вынесли из fillContactForm в 4.7
+    ContactData contact = new ContactData().withId(before.get(index).getId())
+            .withFirstname("изменяем").withLastname("x1").withAddress("M.1").withMobile("59").withEmail("@ru");
 
-    app.contact().modify(index, contact);//свели 5 методов в один в 5.2
+    app.contact().modify(index, contact);
 
     //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ модифик. (в рамках 4.3)
     List<ContactData> after = app.contact().list();//считываем список контактов на странице после модиф. (4.5)
