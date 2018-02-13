@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import java.util.List;
+import java.util.Set;
 
 public class ContactDeletionTests extends TestBase {
   @BeforeMethod //Добавили в 5.2
@@ -20,21 +21,14 @@ public class ContactDeletionTests extends TestBase {
 
   @Test
   public void testContactDeletion() {
-    //int before = app.contact().getContactCount(); //кол-во контактов ДО удаления (в рамках 4.3)
-    List<ContactData> before = app.contact().list();//считываем список контактов на страницы до удаления(4.5)
-    //app.contact().initContactModification(); //вариант удаления контакта через заход в его карточку
-
-    int index = before.size() - 1;
-    app.contact().delete(index);
+    Set<ContactData> before = app.contact().all();//считываем список контактов на страницы до удаления(4.5)
+    ContactData deletedContact = before.iterator().next();
+    app.contact().delete(deletedContact);
     app.goTo().homePage();
-    //int after = app.contact().getContactCount(); //кол-во контактов ПОСЛЕ удаления (в рамках 4.3)
-    List<ContactData> after = app.contact().list();//считываем список контактов на странице после удаления (4.5)
+    Set<ContactData> after = app.contact().all();//считываем список контактов на странице после удаления (4.5)
     Assert.assertEquals(after.size(), before.size() - 1);//проверка кол-ва контактов после создания нового (в рамках 4.3)
 
-    before.remove(index);
-      //for (int i = 0; i < after.size(); i++) { //добавили в 4.6 последовательную сверку всех элементов списков before и after
-      //хотим убедиться, что списки полностью одинаковы
+    before.remove(deletedContact);
     Assert.assertEquals(before, after);
-      //}
   }
 }

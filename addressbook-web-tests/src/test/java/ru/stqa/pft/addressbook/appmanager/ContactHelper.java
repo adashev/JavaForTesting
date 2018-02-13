@@ -7,7 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -34,9 +36,13 @@ public class ContactHelper extends HelperBase {
         type(By.name("email"), contact.getEmail());
     }
 
-    public void initContactModification(int index) { //int index добавили по мотивам 4.4
-        //click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));//по мотивам 4.4 меняем на нижеследующую
+    public void initContactModification(int index) {
         wd.findElements(By.xpath(".//td[8]/a/img")).get(index).click();//
+    }
+
+    public void initContactModifiById(int id) { //нажатие на значок "карандаш" в нужной нам строке таблицы
+        wd.findElement(By.cssSelector("input[value='"  + id + "']")).click();
+        //wd.findElements(By.xpath(".//td[8]/a/img")).get(id).click();
     }
 
     public void updateContactCreation() {
@@ -44,7 +50,6 @@ public class ContactHelper extends HelperBase {
     }
 
     public void deleteSelectedContact() {
-        //click(By.xpath("//div[@id='content']/form[2]/input[2]")); // вариант удаления контакта через заход в его карточку
         click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));//deleteSelectedContact переписана в рамках для выполнения задания 9
         wd.switchTo().alert().accept();
     }
@@ -54,8 +59,8 @@ public class ContactHelper extends HelperBase {
         submitContactCreation();
     }
 
-    public void modify(int index, ContactData contact) {
-        initContactModification(index);
+    public void modify(ContactData contact) {////////////////////////////////////////
+        initContactModifiById(contact.getId());// нажатие на значок "карандаш" в нужной нам строке таблицы
         fillContactForm(contact, false);
         updateContactCreation();
         if (isElementPresent(By.id("maintable"))){
@@ -70,6 +75,11 @@ public class ContactHelper extends HelperBase {
         deleteSelectedContact();
     }
 
+    public void delete(ContactData contact) {
+        selectContactById(contact.getId());
+        deleteSelectedContact();
+    }
+
     public boolean isThereContact() {
         return isElementPresent(By.name("selected[]"));
     }
@@ -78,12 +88,14 @@ public class ContactHelper extends HelperBase {
         return wd.findElements(By.name("selected[]")).size(); //считает текущее число контактов на странице (создано в рамках в 4.3)
     }
 
-    public void selectContact(int index) { //int index добавили по мотивам 4.4
-        wd.findElements(By.name("selected[]")).get(index).click();//поменяли с wd.findElement_ по мотивам 4.4
-//      wd.findElement(By.name("selected[]")).click();
 
+    public void selectContact(int index) { //int index добавили по мотивам 4.4
+        wd.findElements(By.name("selected[]")).get(index).click();
     }
 
+    public void selectContactById(int id) {
+        wd.findElement(By.cssSelector("input[value='"  + id + "']")).click();
+    }
 
     public List<ContactData> list() {// создали по мотивам 4.5
         List<ContactData> contacts = new ArrayList<ContactData>();
@@ -98,4 +110,20 @@ public class ContactHelper extends HelperBase {
         }
         return contacts;
     }
+
+    public Set<ContactData> all() {// создали по мотивам 5.5
+        Set<ContactData> contacts = new HashSet<ContactData>();
+        List<WebElement> elements = wd.findElements(By.name("entry"));
+        for (WebElement element : elements) {
+            String lastname = element.findElement(By.xpath(".//td[2]")).getText();
+            String firstname = element.findElement(By.xpath(".//td[3]")).getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
+            // ищем один элемент внутри другого
+            contacts.add(new ContactData().withId(id)
+                    .withFirstname(firstname).withLastname(lastname));
+        }
+        return contacts;
+    }
+
+
 }

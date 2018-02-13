@@ -5,9 +5,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 import java.util.List;
+import java.util.Set;
 
 public class GroupDeletionTests extends TestBase {
-    @BeforeMethod //Добавили в 5.2
+    @BeforeMethod
     public void ensurePreconditions(){
         app.goTo().groupPage();
         if (app.group().list().size() == 0) {
@@ -17,19 +18,13 @@ public class GroupDeletionTests extends TestBase {
 
     @Test
     public void testGroupDeletion() {
-        List<GroupData> before = app.group().list();//считываем текущий список групп на странице до удаления группы (4.5)
-        //int before = app.group().getGroupCount(); //кол-во групп ДО удаления группы (добавлено 4.3; в 4.5 перенесено после проверки предусловий)
-        int index = before.size() - 1;
-
-        app.group().delete(index);
-        //int after = app.group().getGroupCount(); //кол-во групп ПОСЛЕ удаления данной группы (добавлено в 4.3)
-        List<GroupData> after = app.group().list();//считываем  список групп на странице после созданий новой группы (4.5)
+        Set<GroupData> before = app.group().all();//считываем текущий список групп на странице до удаления группы (4.5)
+        GroupData deletedGroup = before.iterator().next(); // получим первый попавшийся элемент множества
+        app.group().delete(deletedGroup);
+        Set<GroupData> after = app.group().all();//считываем  список групп на странице после созданий новой группы (4.5)
         Assert.assertEquals(after.size(), before.size() - 1);//проверка нового кол-ва групп (добавлено в 4.3)
 
-        before.remove(index); //добавили в 4.6 удаление удаленного элемента из списка before
-        //for (int i = 0; i < after.size(); i++){ //добавили в 4.6 последовательную сверку всех элементов списков before и after
-            // хотим убедиться, что списки полностью одинаковы
-        //Assert.assertEquals(before.get(i), after.get(i));
+        before.remove(deletedGroup); //добавили в 4.6 удаление удаленного элемента из списка before
         Assert.assertEquals(before, after);// к этой форме пришли в конце 4.6
         }
 

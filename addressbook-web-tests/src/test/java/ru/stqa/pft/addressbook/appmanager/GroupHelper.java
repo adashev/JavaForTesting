@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
@@ -35,9 +37,16 @@ public class GroupHelper extends HelperBase {
     public void deleteSelectedGroups() {
         click(By.xpath("//div[@id='content']/form/input[5]"));
     }
-    public void selectGroup(int index) { //параметр int index добавили в 4.4
+
+    public void selectGroup(int index) {
         wd.findElements(By.name("selected[]")).get(index).click();
+
     }
+
+    public void selectGroupById(int id) { // метод добавили в 5.5
+        wd.findElement(By.cssSelector("input[value='"  + id + "']")).click();
+    }
+
     public void initGroupModification() {
         click(By.name("edit"));
     }
@@ -52,8 +61,8 @@ public class GroupHelper extends HelperBase {
         returnGroupPage();
     }
 
-    public void modify(int index, GroupData group) {// добавили в 5.2
-        selectGroup(index);//параметр before - 1 добавлbkb в 4.4, чтобы изменять не первую, а последнюю группу в списке
+    public void modify(GroupData group) {// добавили в 5.2
+        selectGroupById(group.getId());
         initGroupModification();
         fillGroupForm(group);
         submitGroupModification();
@@ -64,6 +73,12 @@ public class GroupHelper extends HelperBase {
        selectGroup(index);//параметр before - 1 добавляем в 4.4, чтобы удалять не первую, а последнюю группу в списке
        deleteSelectedGroups();
        returnGroupPage();
+    }
+
+    public void delete(GroupData group) {
+        selectGroupById(group.getId());
+        deleteSelectedGroups();
+        returnGroupPage();
     }
 
     public boolean isThereAGroup() {
@@ -83,6 +98,18 @@ public class GroupHelper extends HelperBase {
             groups.add(new GroupData().withId(id).withName(name));
         }
         return groups;
-
     }
+
+    public Set<GroupData> all() {  //добавили в 5.5
+        Set<GroupData> groups = new HashSet<GroupData>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            String name = element.getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));//добав. в 4.7. В 4.8 добавили приведение к int
+            groups.add(new GroupData().withId(id).withName(name));
+        }
+        return groups;
+    }
+
+
 }
