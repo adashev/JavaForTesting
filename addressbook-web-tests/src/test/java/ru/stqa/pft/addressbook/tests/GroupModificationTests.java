@@ -13,7 +13,7 @@ public class GroupModificationTests extends TestBase {
     @BeforeMethod //Добавили в 5.2
     public void ensurePreconditions(){
         app.goTo().groupPage(); // вместо .getNavigationHelper().gotoGroupPage() в 5.3
-        if (app.group().list().size() == 0) {
+        if (app.group().all().size() == 0) {
             app.group().create(new GroupData().withName("test1"));
         }
     }
