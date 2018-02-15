@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -87,12 +89,12 @@ public class GroupHelper extends HelperBase {
         return groups;
     }*/
 
-    public Set<GroupData> all() {  //добавили в 5.5
-        Set<GroupData> groups = new HashSet<GroupData>();
+    public Groups all() {  //добавили в 5.5
+        Groups groups = new Groups();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));//добав. в 4.7. В 4.8 добавили приведение к int
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             groups.add(new GroupData().withId(id).withName(name));
         }
         return groups;

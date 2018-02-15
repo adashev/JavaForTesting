@@ -4,7 +4,12 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
+
 import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase {
   @BeforeMethod //Добавили в 5.2
@@ -21,7 +26,7 @@ public class ContactModificationTests extends TestBase {
 
   @Test
   public void testContactModification() {
-    Set<ContactData> before = app.contact().all();//считываем список контактов на страницы до модиф.
+    Contacts before = app.contact().all();//считываем список контактов на страницы до модиф.
     ContactData modifiedContact = before.iterator().next();
     ContactData contact = new ContactData().withId(modifiedContact.getId())
             .withFirstname("14февраля").withLastname("x1").withGroup("gr1")
@@ -29,10 +34,9 @@ public class ContactModificationTests extends TestBase {
 
     app.contact().modify(contact);
 
-    Set<ContactData> after = app.contact().all();//считываем список контактов на странице после модиф.
+    Contacts after = app.contact().all();//считываем список контактов на странице после модиф.
 
-    before.remove(modifiedContact);//удаляем элемент модифицированный через UI из нашего списка (4.7)
-    before.add(contact);//вместо удаленного элемента добавляем новый модифицированный (4.7)
-    Assert.assertEquals(before, after);
+    assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+    // -1:33
   }
 }

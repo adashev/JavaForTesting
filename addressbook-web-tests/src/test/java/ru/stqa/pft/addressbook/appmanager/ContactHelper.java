@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +38,8 @@ public class ContactHelper extends HelperBase {
 
 
     public void initContactModifiById(int id) { //нажатие на значок "карандаш" в нужной нам (id) строке таблицы
-        wd.findElement(By.xpath("//tbody/tr/td/input[@id='" + id + "']/../../td[8]")).click();
+        wd.findElement(By.cssSelector("a[href='" + "edit.php?id=" + id + "']")).click();
+        //wd.findElement(By.xpath("//tbody/tr/td/input[@id='" + id + "']/../../td[8]")).click();
 
     }
 
@@ -95,8 +98,8 @@ public class ContactHelper extends HelperBase {
         return contacts;
     }*/
 
-    public Set<ContactData> all() {// создали по мотивам 5.5
-        Set<ContactData> contacts = new HashSet<ContactData>();
+    public Contacts all() {// создали по мотивам 5.5
+        Contacts contacts = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String lastname = element.findElement(By.xpath(".//td[2]")).getText();
