@@ -7,10 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -55,21 +54,24 @@ public class ContactHelper extends HelperBase {
     public void create(ContactData contact, boolean creation){
         fillContactForm (contact, creation);
         submitContactCreation();
+        contactCache = null; //добавили в 5.7
     }
 
-    public void modify(ContactData contact) {//////////
+    public void modify(ContactData contact) {
         initContactModifiById(contact.getId());// нажатие на значок "карандаш" в нужной нам строке таблицы
         fillContactForm(contact, false);
         updateContactCreation();
         if (isElementPresent(By.id("maintable"))){
             return;
         }
+        contactCache = null; //добавили в 5.7
         click(By.linkText("home"));
     }
 
     public void delete(ContactData contact) {
         selectContactById(contact.getId());
         deleteSelectedContact();
+        contactCache = null;//добавили в 5.7
     }
 
     public boolean isThereContact() {
@@ -84,33 +86,24 @@ public class ContactHelper extends HelperBase {
         wd.findElement(By.cssSelector("input[value='"  + id + "']")).click();
     }
 
-    /*public List<ContactData> list() {// создали по мотивам 4.5
-        List<ContactData> contacts = new ArrayList<ContactData>();
-        List<WebElement> elements = wd.findElements(By.name("entry"));
-        for (WebElement element : elements) {
-            String lastname = element.findElement(By.xpath(".//td[2]")).getText();
-            String firstname = element.findElement(By.xpath(".//td[3]")).getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
-            // ищем один элемент внутри другого
-            contacts.add(new ContactData().withId(id)
-                    .withFirstname(firstname).withLastname(lastname));
-        }
-        return contacts;
-    }*/
+    private Contacts contactCache = null; //добавили в 5.7
 
     public Contacts all() {// создали по мотивам 5.5
-        Contacts contacts = new Contacts();
+
+        if (contactCache != null) { //добавили в 5.7
+            return new Contacts(contactCache);// возвращаем копию кеша списка контактов
+        }
+
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String lastname = element.findElement(By.xpath(".//td[2]")).getText();
             String firstname = element.findElement(By.xpath(".//td[3]")).getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
             // ищем один элемент внутри другого
-            contacts.add(new ContactData().withId(id)
+            contactCache.add(new ContactData().withId(id)
                     .withFirstname(firstname).withLastname(lastname));
         }
-        return contacts;
+        return new Contacts(contactCache);
     }
-
-
 }

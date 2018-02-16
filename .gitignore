@@ -26,3 +26,6 @@ addressbook-web-tests/.idea/workspace.xml
 addressbook-web-tests/.idea/workspace.xml
 *.xml
 *.xml
+*.xml
+addressbook-web-tests/.idea/libraries/Gradle__com_beust_jcommander_1_72.xml
+addressbook-web-tests/.idea/libraries/Gradle__com_google_code_findbugs_jsr305_1_3_9.xml
