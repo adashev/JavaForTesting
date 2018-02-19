@@ -1,6 +1,5 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -23,8 +22,9 @@ public class GroupDeletionTests extends TestBase {
         Groups before = app.group().all();//считываем текущий список групп на странице до удаления группы (4.5)
         GroupData deletedGroup = before.iterator().next(); // получим первый попавшийся элемент множества
         app.group().delete(deletedGroup);
+
+        assertThat(app.group().count(), equalTo(before.size() - 1));// в 5.8
         Groups after = app.group().all();//считываем  список групп на странице после созданий новой группы (4.5)
-        Assert.assertEquals(after.size(), before.size() - 1);//проверка нового кол-ва групп (добавлено в 4.3)
         assertThat(after, equalTo(before.without(deletedGroup)));
 
         }

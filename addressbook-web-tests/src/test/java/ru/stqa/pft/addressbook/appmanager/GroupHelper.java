@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
@@ -76,7 +74,8 @@ public class GroupHelper extends HelperBase {
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }
-    public int getGroupCount() {//создана в 4.3
+
+    public int count() {//создана в 4.3
         return wd.findElements(By.name("selected[]")).size(); //считает текущее число групп на странице (напр., в 4.3)
     } //т.е. все теги, у кот. есть атрибут name="selected[]"
 
