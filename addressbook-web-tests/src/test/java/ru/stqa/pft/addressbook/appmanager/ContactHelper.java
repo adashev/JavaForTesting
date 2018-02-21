@@ -30,13 +30,17 @@ public class ContactHelper extends HelperBase {
         }
 
         type(By.name("address"),contact.getAddress());
-        type(By.name("mobile"), contact.getMobile());
+        type(By.name("mobile"), contact.getMobilePhone());
         type(By.name("email"), contact.getEmail());
     }
 
 
     public void initContactModifiById(int id) { //нажатие на значок "карандаш" в нужной нам (id) строке таблицы
-        wd.findElement(By.cssSelector("a[href='" + "edit.php?id=" + id + "']")).click();
+        WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));//находим чекбокс нужной строки (по id)
+        WebElement row = checkbox.findElement(By.xpath("./../.."));//поднимаемся на 2 уровня вверх: ячейка-строка(находим нужную строку)
+        List<WebElement> cells = row. findElements(By.tagName("td"));// берем список всех ячеек найденной строки
+        cells.get(7).findElement(By.tagName("a")).click ();//находим тэг a(гиперссылка) внутри 7-й ячейки
+        //wd.findElement(By.cssSelector("a[href='" + "edit.php?id=" + id + "']")).click();
         //wd.findElement(By.xpath("//tbody/tr/td/input[@id='" + id + "']/../../td[8]")).click();
 
     }
@@ -57,7 +61,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void modify(ContactData contact) {
-        initContactModifiById(contact.getId());// нажатие на значок "карандаш" в нужной нам строке таблицы
+        initContactModifiById(contact.getId());// нажать на значок "карандаш" в нужной нам строке таблицы
         fillContactForm(contact, false);
         updateContactCreation();
         if (isElementPresent(By.id("maintable"))){
@@ -104,5 +108,18 @@ public class ContactHelper extends HelperBase {
                     .withFirstname(firstname).withLastname(lastname));
         }
         return new Contacts(contactCache);
+    }
+
+    public ContactData infoFromEditForm(ContactData contact) { // добавили в 5.9
+        initContactModifiById(contact.getId());
+        String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+
+        wd.navigate().back();
+        return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
     }
 }
