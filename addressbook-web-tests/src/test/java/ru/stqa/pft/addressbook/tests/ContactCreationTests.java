@@ -10,15 +10,15 @@ public class ContactCreationTests extends TestBase {
     @Test
     public void testContactCreation() {
         app.goTo().homePage();
-        Contacts before = app.contact().all();//считываем текущий список контактов на страницы до создания нового (4.5)
+        Contacts before = (Contacts) app.contact().all();//считываем текущий список контактов на страницы до создания нового (4.5)
         app.goTo().gotoAddContactPage();
         ContactData contact = new ContactData()
                 .withFirstname("создание").withLastname("О").withGroup("test1")
-                .withAddress("Е, 1").withMobile("4-0").withEmail("@ru");
+                .withAddress("Е, 1").withMobilePhone("4-0").withEmail("@ru");
         app.contact().create(contact,true);
         app.goTo().homePage();
 
-        Contacts after = app.contact().all();//считываем текущий список контактов на страницы после создания нового (4.5)
+        Contacts after = (Contacts) app.contact().all();//считываем текущий список контактов на страницы после создания нового (4.5)
 
         assertThat(after.size(), equalTo(before.size() + 1));
 
@@ -29,16 +29,16 @@ public class ContactCreationTests extends TestBase {
     @Test
     public void testBadContactCreation() {
         app.goTo().homePage();
-        Contacts before = app.contact().all();//считываем текущий список контактов на страницы до создания нового (4.5)
+        Contacts before = (Contacts) app.contact().all();//считываем текущий список контактов на страницы до создания нового (4.5)
         app.goTo().gotoAddContactPage();
         ContactData contact = new ContactData()
                 .withFirstname("создан '").withLastname("О").withGroup("test1")
-                .withAddress("Е, 1").withMobile("4-0").withEmail("@ru");
+                .withAddress("Е, 1").withMobilePhone("4-0").withEmail("@ru");
         app.contact().create(contact,true);
         app.goTo().homePage();
 
         assertThat(app.contact().count(), equalTo(before.size()));
-        Contacts after = app.contact().all();//считываем текущий список контактов на страницы после создания нового (4.5)
+        Contacts after = (Contacts) app.contact().all();//считываем текущий список контактов на страницы после создания нового (4.5)
         contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()); // присваиваем контакту нужный id
         assertThat(after, equalTo(before));
     }

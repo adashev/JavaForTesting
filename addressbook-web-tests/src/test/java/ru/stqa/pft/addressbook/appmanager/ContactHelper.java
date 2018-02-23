@@ -8,7 +8,9 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -91,24 +93,39 @@ public class ContactHelper extends HelperBase {
 
     private Contacts contactCache = null; //добавили в 5.7
 
-    public Contacts all() {// создали по мотивам 5.5
-
+    /*public Contacts all() {
         if (contactCache != null) { //добавили в 5.7
-            return new Contacts(contactCache);// возвращаем копию кеша списка контактов
+            return new Contacts(contactCache);
         }
-
         contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String lastname = element.findElement(By.xpath(".//td[2]")).getText();
             String firstname = element.findElement(By.xpath(".//td[3]")).getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
-            // ищем один элемент внутри другого
             contactCache.add(new ContactData().withId(id)
                     .withFirstname(firstname).withLastname(lastname));
         }
         return new Contacts(contactCache);
+    }*/
+
+    public Set<ContactData> all() { // сменили на эту реализацию метода в 5.10
+        Set<ContactData> contacts = new HashSet<ContactData>();
+        List<WebElement> rows = wd.findElements(By.name("entry"));
+        for (WebElement row : rows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+            String lastname = cells.get(1).getText();
+            String firstname = cells.get(2).getText();
+            String[] phones = cells.get(5).getText().split("\n");// "разрезаем" полученную строчку на части (на отдельные номера телефонов)
+// "\n" - регулярное ваыражение (шаблон поиска)
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
+                    .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+        }
+        return contacts;
     }
+
+
 
     public ContactData infoFromEditForm(ContactData contact) { // добавили в 5.9
         initContactModifiById(contact.getId());
