@@ -117,10 +117,12 @@ public class ContactHelper extends HelperBase {
             int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
             String lastname = cells.get(1).getText();
             String firstname = cells.get(2).getText();
-            String[] phones = cells.get(5).getText().split("\n");// "разрезаем" полученную строчку на части (на отдельные номера телефонов)
-// "\n" - регулярное ваыражение (шаблон поиска)
-            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname)
-                    .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+            String allPhones = cells.get(5).getText();
+            //String[] allPhones = cells.get(5).getText().split("\n");//в 5.10 "разрезаем" полученную строчку на части (на отдельные номера телефонов)
+            // "\n" - регулярное ваыражение (шаблон поиска)
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withAllPhones(allPhones));
+            //withAllPhones - добавлен в 5.11
+            //в 5.10 было  .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
         }
         return contacts;
     }
