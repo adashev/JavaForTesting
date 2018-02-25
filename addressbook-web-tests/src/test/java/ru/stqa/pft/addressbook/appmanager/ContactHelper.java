@@ -38,6 +38,7 @@ public class ContactHelper extends HelperBase {
 
 
     public void initContactModifiById(int id) { //нажатие на значок "карандаш" в нужной нам (id) строке таблицы
+        // подробный разбор разных вариантов построения локатора в 5.9
         WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));//находим чекбокс нужной строки (по id)
         WebElement row = checkbox.findElement(By.xpath("./../.."));//поднимаемся на 2 уровня вверх: ячейка-строка(находим нужную строку)
         List<WebElement> cells = row. findElements(By.tagName("td"));// берем список всех ячеек найденной строки
@@ -93,22 +94,6 @@ public class ContactHelper extends HelperBase {
 
     private Contacts contactCache = null; //добавили в 5.7
 
-    /*public Contacts all() {
-        if (contactCache != null) { //добавили в 5.7
-            return new Contacts(contactCache);
-        }
-        contactCache = new Contacts();
-        List<WebElement> elements = wd.findElements(By.name("entry"));
-        for (WebElement element : elements) {
-            String lastname = element.findElement(By.xpath(".//td[2]")).getText();
-            String firstname = element.findElement(By.xpath(".//td[3]")).getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
-            contactCache.add(new ContactData().withId(id)
-                    .withFirstname(firstname).withLastname(lastname));
-        }
-        return new Contacts(contactCache);
-    }*/
-
     public Set<ContactData> all() { // сменили на эту реализацию метода в 5.10
         Set<ContactData> contacts = new HashSet<ContactData>();
         List<WebElement> rows = wd.findElements(By.name("entry"));
@@ -120,14 +105,16 @@ public class ContactHelper extends HelperBase {
             String allPhones = cells.get(5).getText();
             //String[] allPhones = cells.get(5).getText().split("\n");//в 5.10 "разрезаем" полученную строчку на части (на отдельные номера телефонов)
             // "\n" - регулярное ваыражение (шаблон поиска)
-            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withAllPhones(allPhones));
-            //withAllPhones - добавлен в 5.11
-            //в 5.10 было  .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+            //withAllPhones - добавлен в 5.11. В 5.10 было  .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+            String address = cells.get(3).getText();// для задания-11
+            String allMails = cells.get(4).getText();// для задания-11
+
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withAllPhones(allPhones)
+            .withAddress(address)
+            .withAllMails(allMails));
         }
         return contacts;
     }
-
-
 
     public ContactData infoFromEditForm(ContactData contact) { // добавили в 5.9
         initContactModifiById(contact.getId());
@@ -136,9 +123,11 @@ public class ContactHelper extends HelperBase {
         String home = wd.findElement(By.name("home")).getAttribute("value");
         String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
         String work = wd.findElement(By.name("work")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getText();   //для Задания №11
 
         wd.navigate().back();
         return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
-                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
+                .withAddress(address);
     }
 }

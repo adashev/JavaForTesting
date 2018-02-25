@@ -22,14 +22,15 @@ public class ContactPhoneTests extends TestBase {
     private String mergePhones(ContactData contact) { // метод склейки телефонов в одну строку. добавлен в 5.11
         return Arrays.asList(contact.getHomePhone(), contact.getMobilePhone(), contact.getWorkPhone())
                 .stream().filter((s) -> ! s.equals(""))
-                .map(ContactPhoneTests :: cleaned) // применить ко всем элементам потока функцию cleaned
-                .collect(Collectors.joining("\n"));
+                .map(ContactPhoneTests :: cleaned) // применить ко всем элементам потока функцию cleaned и вернуть в поток результат
+                .collect(Collectors.joining("\n"));// коллектор склеивает все элементы потока в одну строку
+        // "\n" - строка, которая будет вставляться между склеиваемыми фрагментами
     }
 
     public static String cleaned(String phone) {
         return phone.replaceAll("\\s", "").replaceAll("[-)(]", "");
         // немнорго о регулярных выражениях:
-        // \s - любой пробельный символ: пробел. табуляция, перевод строки
+        // \\s - любой пробельный символ: пробел. табуляция, перевод строки
         // внутри [ ] перечисляем все требующие замены символы
         // [a-z] - заменить любую букву, которая входит в указанный диапазон
     }
