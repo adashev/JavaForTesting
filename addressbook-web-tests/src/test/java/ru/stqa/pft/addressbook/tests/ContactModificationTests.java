@@ -1,9 +1,12 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+
+import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,23 +19,24 @@ public class ContactModificationTests extends TestBase {
       app.goTo().gotoAddContactPage();
       app.contact().create(new ContactData().withFirstname("создаем").withLastname("x").withGroup("gr1")
               .withGroup("test1").withAddress("Adres")
-              .withMobilePhone("7-8").withEmail("d@ru"), true);
+              .withMobile("7-8").withEmail("d@ru"), true);
       app.goTo().homePage();
     }
   }
 
   @Test
   public void testContactModification() {
-    Contacts before = (Contacts) app.contact().all();//считываем список контактов на страницы до модиф.
+    Contacts before = app.contact().all();//считываем список контактов на страницы до модиф.
     ContactData modifiedContact = before.iterator().next();
     ContactData contact = new ContactData().withId(modifiedContact.getId())
             .withFirstname("14февраля").withLastname("x1").withGroup("gr1")
-            .withAddress("M.1").withMobilePhone("59").withEmail("@ru");
+            .withAddress("M.1").withMobile("59").withEmail("@ru");
 
     app.contact().modify(contact);
 
-    assertThat(app.contact().count(), equalTo(before.size()));
-    Contacts after = (Contacts) app.contact().all();//считываем список контактов на странице после модиф.
+    Contacts after = app.contact().all();//считываем список контактов на странице после модиф.
+
     assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+    // -1:33
   }
 }
