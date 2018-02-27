@@ -32,14 +32,19 @@ public class ContactHelper extends HelperBase {
         type(By.name("firstname"),contact.getFirstname());
         type(By.name("lastname"),contact.getLastname());
         type(By.name("address"),contact.getAddress());
-        type(By.name("mobile"), contact.getMobile());
+        type(By.name("mobile"), contact.getMobilePhone());
         type(By.name("email"), contact.getEmail());
         attach(By.name("photo"), contact.getPhoto()); // -3^57
     }
 
 
     public void initContactModifiById(int id) { //нажатие на значок "карандаш" в нужной нам (id) строке таблицы
-        wd.findElement(By.cssSelector("a[href='" + "edit.php?id=" + id + "']")).click();
+        // подробный разбор разных вариантов построения локатора в 5.9
+        WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));//находим чекбокс нужной строки (по id)
+        WebElement row = checkbox.findElement(By.xpath("./../.."));//поднимаемся на 2 уровня вверх: ячейка-строка(находим нужную строку)
+        List<WebElement> cells = row. findElements(By.tagName("td"));// берем список всех ячеек найденной строки
+        cells.get(7).findElement(By.tagName("a")).click ();//находим тэг a(гиперссылка) внутри 7-й ячейки
+        //wd.findElement(By.cssSelector("a[href='" + "edit.php?id=" + id + "']")).click();
         //wd.findElement(By.xpath("//tbody/tr/td/input[@id='" + id + "']/../../td[8]")).click();
 
     }
@@ -101,17 +106,49 @@ public class ContactHelper extends HelperBase {
 
     public Contacts all() {// создали по мотивам 5.5
         Contacts contacts = new Contacts();
-        List<WebElement> elements = wd.findElements(By.name("entry"));
-        for (WebElement element : elements) {
-            String lastname = element.findElement(By.xpath(".//td[2]")).getText();
+        List<WebElement> rows = wd.findElements(By.name("entry"));
+        for (WebElement row : rows) {
+            List<WebElement> cells = row.findElements(By.tagName("td"));
+            int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+            String lastname = cells.get(1).getText();
+            String firstname = cells.get(2).getText();
+            String allPhones = cells.get(5).getText();
+            //String[] allPhones = cells.get(5).getText().split("\n");//в 5.10 "разрезаем" полученную строчку на части (на отдельные номера телефонов)
+            // "\n" - регулярное ваыражение (шаблон поиска)
+            //withAllPhones - добавлен в 5.11. В 5.10 было  .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+            String address = cells.get(3).getText();// для задания-11
+            String allMails = cells.get(4).getText();// для задания-11
+
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname).withAllPhones(allPhones)
+                    .withAddress(address)
+                    .withAllMails(allMails));
+            /*String lastname = element.findElement(By.xpath(".//td[2]")).getText();
             String firstname = element.findElement(By.xpath(".//td[3]")).getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute ("value"));//по мотивам 4.7. Считываем id контакта
             // ищем один элемент внутри другого
             contacts.add(new ContactData().withId(id)
-                    .withFirstname(firstname).withLastname(lastname));
+                    .withFirstname(firstname).withLastname(lastname));*/
         }
         return contacts;
     }
 
 
+    public ContactData infoFromEditForm(ContactData contact) {
+        initContactModifiById(contact.getId());
+        String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        String address = wd.findElement(By.name("address")).getText();   //для Задания №11
+        String email = wd.findElement(By.name("email")).getAttribute("value");   //для Задания №11
+        String email2 = wd.findElement(By.name("email2")).getAttribute("value"); //для Задания №11
+        String email3 = wd.findElement(By.name("email3")).getAttribute("value"); //для Задания №11
+
+        wd.navigate().back();
+        return new ContactData().withId(contact.getId()).withFirstname(firstname).withLastname(lastname)
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work)
+                .withAddress(address)
+                .withEmail(email).withEmail2(email2).withEmail3(email3);
+    }
 }

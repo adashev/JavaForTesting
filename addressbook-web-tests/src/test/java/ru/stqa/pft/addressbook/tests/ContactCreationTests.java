@@ -18,7 +18,7 @@ public class ContactCreationTests extends TestBase {
         app.goTo().gotoAddContactPage();
         ContactData contact = new ContactData()
                 .withFirstname("с фото").withLastname("О").withPhoto(photo)
-                .withAddress("Е, 1").withMobile("4-0").withEmail("@ru");
+                .withAddress("Е, 1").withMobilePhone("4-0").withEmail("@ru");
         app.contact().create(contact,true);
         app.goTo().homePage();
 

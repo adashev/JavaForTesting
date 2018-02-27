@@ -20,7 +20,7 @@ public class ContactDeletionTests extends TestBase {
     if (app.contact().all().size() == 0) {
       app.goTo().gotoAddContactPage();
       app.contact().create(new ContactData().withFirstname("z").withLastname("x")
-              .withGroup("test1").withAddress("Addres").withMobile("7-8").withEmail("d@ru"), true);
+              .withGroup("test1").withAddress("Addres").withMobilePhone("7-8").withEmail("d@ru"), true);
       app.goTo().homePage();
     }
   }
