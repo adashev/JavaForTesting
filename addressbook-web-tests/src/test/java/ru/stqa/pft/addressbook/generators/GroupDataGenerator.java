@@ -1,5 +1,8 @@
 package ru.stqa.pft.addressbook.generators;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import ru.stqa.pft.addressbook.model.GroupData;
 import java.io.File;
 import java.io.FileWriter;
@@ -9,16 +12,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDataGenerator {
-    public static void main(String[] args) throws IOException {
-        // в качестве параметров передаем кол-во групп и путь к файлу
-        int count = Integer.parseInt(args[0]);
-        File file = new File(args[1]);
+    @Parameter(names = "-c", description = "Group count")
+    public int count;
 
-        List<GroupData> groups = generateGroups(count);// 1) генерируем требуемое кол-во групп
-        save(groups, file); // 2) сохраняем сгенирированные группы в файл
+    @Parameter(names = "-f", description = "Target file")
+    public String file;
+
+    public static void main(String[] args) throws IOException {
+        GroupDataGenerator generator = new GroupDataGenerator();
+        JCommander jCommander = new JCommander(generator);
+        try {
+            jCommander.parse(args);
+        } catch (ParameterException ex) {
+            jCommander.usage();
+            return;
+        }
+        generator.run();
+        // в качестве параметров передаем кол-во групп и путь к файлу
+        /*int count = Integer.parseInt(args[0]);
+        File file = new File(args[1]);*/
     }
 
-    private static void save(List<GroupData> groups, File file) throws IOException {// сохраняем сгенирированные группы в файл
+    private void run() throws IOException {
+        List<GroupData> groups = generateGroups(count);// 1) генерируем требуемое кол-во групп
+        save(groups, new File(file)); // 2) сохраняем сгенирированные группы в файл
+    }
+
+    private void save(List<GroupData> groups, File file) throws IOException {// сохраняем сгенирированные группы в файл
         System.out.println(new File(".").getAbsolutePath());
         Writer writer = new FileWriter(file);
         for (GroupData group : groups) {
@@ -27,7 +47,7 @@ public class GroupDataGenerator {
         writer.close();
     }
 
-    private static List<GroupData> generateGroups(int count) { // генерируем требуемое кол-во групп
+    private List<GroupData> generateGroups(int count) { // генерируем требуемое кол-во групп
         List<GroupData> groups = new ArrayList<GroupData>();
         for (int i = 0; i < count; i++) {
             groups.add(new GroupData().withName(String.format("test %s", i))
