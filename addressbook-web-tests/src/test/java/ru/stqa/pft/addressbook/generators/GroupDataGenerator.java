@@ -3,6 +3,7 @@ package ru.stqa.pft.addressbook.generators;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.GroupData;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,6 +19,9 @@ public class GroupDataGenerator {
     @Parameter(names = "-f", description = "Target file")
     public String file;
 
+    @Parameter(names = "-d", description = "Data format")// добавлено в 6.6
+    public String format;
+
     public static void main(String[] args) throws IOException {
         GroupDataGenerator generator = new GroupDataGenerator();
         JCommander jCommander = new JCommander(generator);
@@ -28,17 +32,28 @@ public class GroupDataGenerator {
             return;
         }
         generator.run();
-        // в качестве параметров передаем кол-во групп и путь к файлу
-        /*int count = Integer.parseInt(args[0]);
-        File file = new File(args[1]);*/
     }
 
     private void run() throws IOException {
         List<GroupData> groups = generateGroups(count);// 1) генерируем требуемое кол-во групп
-        save(groups, new File(file)); // 2) сохраняем сгенирированные группы в файл
+        if (format.equals("csv")) {
+            saveAsCsv(groups, new File(file)); // 2) сохраняем сгенирированные группы в файл
+        } else if (format.equals("xml")) {
+            saveAsXml(groups, new File(file));
+        } else {
+            System.out.println("Unrecognized format " + format);
+        }
     }
 
-    private void save(List<GroupData> groups, File file) throws IOException {// сохраняем сгенирированные группы в файл
+    private void saveAsXml(List<GroupData> groups, File file) throws IOException { // в 6.6
+        XStream xstream = new XStream();
+        String xml = xstream.toXML(groups);
+        Writer writer = new FileWriter(file);
+        writer.write(xml);
+        writer.close();
+    }
+
+    private void saveAsCsv(List<GroupData> groups, File file) throws IOException {// сохраняем сгенирированные группы в файл
         System.out.println(new File(".").getAbsolutePath());
         Writer writer = new FileWriter(file);
         for (GroupData group : groups) {
