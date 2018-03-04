@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.tests;
 
+import com.thoughtworks.xstream.XStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,15 +19,25 @@ public class GroupCreationTests extends TestBase {
 
     @DataProvider // загружаем данные (6.4, 6.5)
     public Iterator<Object[]> validGroups() throws IOException {
-        List<Object[]> list = new ArrayList<Object[]>();
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv")));
+//      List<Object[]> list = new ArrayList<Object[]>();
+        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")));
+        String xml = ""; // в 6.6
+
         String line = reader.readLine();
-        while (line != null) {
+        while (line != null) {// в 6.6
+            xml += line;
+            line = reader.readLine();
+        }
+        XStream xstream = new XStream();// в 6.6
+        xstream.processAnnotations(GroupData.class);// в 6.6
+        List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);// в 6.6
+        return groups.stream().map((g) -> new Object[] {g}).collect(Collectors.toList()).iterator();// в 6.6
+        /*while (line != null) {
             String[] split = line.split(";");
             list.add( new Object[] {new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])} );
             line = reader.readLine();
-        }
-        return list.iterator();
+        }*/
+//        return list.iterator();
     }
 
     @Test(dataProvider = "validGroups")
