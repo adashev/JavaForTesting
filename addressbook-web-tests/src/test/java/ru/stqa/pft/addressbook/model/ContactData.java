@@ -1,8 +1,14 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.io.File;
 
+@XStreamAlias("contact")
+
 public class ContactData {
+    @XStreamOmitField // пропустить это поле, не сохраняя его в XML
     private int id = Integer.MAX_VALUE; // добавлен по мотивам 4.7. Тип изменен на int в 4.8
     private String firstname;
     private String lastname;
