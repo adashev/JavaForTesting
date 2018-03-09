@@ -50,18 +50,22 @@ public class GroupDataGenerator {
         xstream.processAnnotations(GroupData.class);
 //      xstream.alias("group", GroupData.class);
         String xml = xstream.toXML(groups);
-        Writer writer = new FileWriter(file);
+        /*Writer writer = new FileWriter(file);
         writer.write(xml);
-        writer.close();
+        writer.close();*/
+        try (Writer writer = new FileWriter(file)){// в 6.8 автоматич. закрытие файла
+            writer.write(xml);
+        }
     }
 
     private void saveAsCsv(List<GroupData> groups, File file) throws IOException {// сохраняем сгенирированные группы в файл
         System.out.println(new File(".").getAbsolutePath());
-        Writer writer = new FileWriter(file);
-        for (GroupData group : groups) {
-            writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
+        try (Writer writer = new FileWriter(file)) {// в 6.8 автоматич. закрытие файла
+            for (GroupData group : groups) {
+                writer.write(String.format("%s;%s;%s\n", group.getName(), group.getHeader(), group.getFooter()));
+            }
         }
-        writer.close();
+        //writer.close();
     }
 
     private List<GroupData> generateGroups(int count) { // генерируем требуемое кол-во групп

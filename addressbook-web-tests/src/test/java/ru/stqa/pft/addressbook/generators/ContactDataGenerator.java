@@ -53,19 +53,20 @@ public class ContactDataGenerator {
         XStream xstream = new XStream();
         xstream.processAnnotations(ContactData.class);
         String xml = xstream.toXML(contacts); // каждый объект-контакт преобразовать в xml-строку
-        Writer writer = new FileWriter(file);
-        writer.write(xml);
-        writer.close();
-
+        try (Writer writer = new FileWriter(file)){// в 6.8 автоматич. закрытие файла
+            writer.write(xml);
+        }
+        //writer.close();
     }
 
     private void saveAsCsv(List<ContactData> contacts, File file) throws IOException {//в 6.2
         System.out.println(new File(".").getAbsolutePath());
-        Writer writer = new FileWriter(file);
-        for (ContactData contact : contacts) {
-            writer.write(String.format("%s;%s;%s\n", contact.getLastname(), contact.getFirstname(), contact.getAddress()));
+        try (Writer writer = new FileWriter(file)){// в 6.8 автоматич. закрытие файла
+            for (ContactData contact : contacts) {
+                writer.write(String.format("%s;%s;%s\n", contact.getLastname(), contact.getFirstname(), contact.getAddress()));
+            }
         }
-        writer.close();
+        //writer.close();
     }
 
     private List<ContactData> generateСontacts(int count) {//в 6.2
