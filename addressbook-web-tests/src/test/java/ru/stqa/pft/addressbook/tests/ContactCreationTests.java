@@ -22,7 +22,7 @@ public class ContactCreationTests extends TestBase {
         try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")))){
             String xml = ""; // в 6.6
             String line = reader.readLine();
-            while (line != null) {// в 6.5. Изменено на xml в 6.6
+            while (line != null) {
                 xml += line;
                 line = reader.readLine();
             }

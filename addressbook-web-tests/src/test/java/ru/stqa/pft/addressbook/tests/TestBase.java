@@ -7,8 +7,11 @@ import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.addressbook.appmanager.ApplicationManager;
 
 public class TestBase {
-    protected static final ApplicationManager app = new ApplicationManager(BrowserType.CHROME);
-    // static добавили в 5.1. app становиться самостоятельной глобальной переменной. Общей для всех объектов и тестов
+    protected static final ApplicationManager app
+            = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
+            //= new ApplicationManager(BrowserType.CHROME);
+
+    // static добавили в 5.1. app становиться самостоятельной глобальной переменной (общей для всех объектов и тестов)
 
     @BeforeSuite // вместо @BeforeMethod в 5.1
     public void setUp() throws Exception {
