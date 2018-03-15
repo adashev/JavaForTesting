@@ -53,3 +53,9 @@ addressbook-web-tests/build/test-results/testContacts/TEST-ru.stqa.pft.addressbo
 addressbook-web-tests/build/test-results/testGroups/TEST-ru.stqa.pft.addressbook.tests.GroupDeletionTests.xml
 addressbook-web-tests/build/test-results/testGroups/TEST-ru.stqa.pft.addressbook.tests.GroupCreationTests.xml
 *.log
+addressbook-web-tests/.idea/compiler.xml
+addressbook-web-tests/.idea/compiler.xml
+addressbook-web-tests/.idea/compiler.xml
+addressbook-web-tests/.idea/gradle.xml
+addressbook-web-tests/.idea/modules.xml
+addressbook-web-tests/.idea/workspace.xml
