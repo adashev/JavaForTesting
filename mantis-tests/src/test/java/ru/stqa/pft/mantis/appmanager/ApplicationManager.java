@@ -44,4 +44,12 @@ public class ApplicationManager {
     public void stop() {
         wd.quit();
     }
+
+    public HttpSession newSession(){ // в 8.3
+        return new HttpSession(this);
+    } // 8.3. Конструируем новую сессию
+
+    public String getProperty(String key) {
+        return properties.getProperty(key); // key - имя свойства, которое нужно извлечь
+    }
 }

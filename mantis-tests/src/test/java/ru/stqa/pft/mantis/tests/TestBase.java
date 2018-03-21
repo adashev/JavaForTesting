@@ -9,7 +9,7 @@ import ru.stqa.pft.mantis.appmanager.ApplicationManager;
 public class TestBase {
 
     protected static final ApplicationManager app
-            = new ApplicationManager(System.getProperty("browser", BrowserType.CHROME));
+            = new ApplicationManager(System.getProperty("browser", BrowserType.FIREFOX));
             //= new ApplicationManager(BrowserType.CHROME);
 
     // static добавили в 5.1. app становиться самостоятельной глобальной переменной (общей для всех объектов и тестов)
@@ -19,8 +19,8 @@ public class TestBase {
         app.init();
     }
 
-    @AfterSuite(alwaysRun = true)
+    /*@AfterSuite(alwaysRun = true)
     public void tearDown() {
         app.stop();
-    }
+    }*/
 }
