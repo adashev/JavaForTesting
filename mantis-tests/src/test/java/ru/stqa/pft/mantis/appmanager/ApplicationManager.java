@@ -17,6 +17,7 @@ public class ApplicationManager {
     private WebDriver wd; // сделали переменную private в 8.4 -3:10
     private String browser;
     private RegistrationHelper registrationHelper;
+    private FtpHelper ftp; // 8.5
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -49,6 +50,14 @@ public class ApplicationManager {
         }
         return registrationHelper; //
     }
+
+    public FtpHelper ftp(){ // 8.5
+        if (ftp == null){ // если помощник еще не инициал-ан, то...
+            ftp = new FtpHelper(this);
+        }
+        return ftp; // 8.5  -9:54
+    }
+
 
     public WebDriver getDriver() { // метод ленивой инициализации браузера.
         // драйвер будет инициализ. в тот момент, когда к нему кто-то обратится
