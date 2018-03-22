@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
     private final Properties properties; // 6.10
-    WebDriver wd;
-
+    private WebDriver wd; // сделали переменную private в 8.4 -3:10
     private String browser;
+    private RegistrationHelper registrationHelper;
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -26,23 +26,13 @@ public class ApplicationManager {
     public void init() throws IOException {
         String target = System.getProperty("target", "local");// 6.10
         properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));// 6.10
-
-        if (browser.equals(BrowserType.FIREFOX)){
-            wd = new FirefoxDriver();
-        } else if (browser.equals(BrowserType.CHROME)) {
-            wd = new ChromeDriver();
-        } else if (browser.equals(BrowserType.IE)) {
-            wd = new InternetExplorerDriver();
-        }
-        wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        //при time = 0 неявные ожидания выключены
-
-        //wd.get("http://localhost/addressbook");
-        wd.get(properties.getProperty("web.baseUrl"));// в 6.10 + создали конфиг. файл local.properties
     }
 
-    public void stop() {
-        wd.quit();
+    public void stop()
+    {
+        if (wd != null){ // сдобавили проверку в 8.4 -2:45
+            wd.quit();
+        }
     }
 
     public HttpSession newSession(){ // в 8.3
@@ -51,5 +41,29 @@ public class ApplicationManager {
 
     public String getProperty(String key) {
         return properties.getProperty(key); // key - имя свойства, которое нужно извлечь
+    }
+
+    public RegistrationHelper registration() {
+        if (registrationHelper == null) { // в 8.4 -1:35 обеспечивает отсутствие повторонй инициализации
+            registrationHelper = new RegistrationHelper(this);
+        }
+        return registrationHelper; //
+    }
+
+    public WebDriver getDriver() { // метод ленивой инициализации браузера.
+        // драйвер будет инициализ. в тот момент, когда к нему кто-то обратится
+        if (wd == null){ // код ниже перенесли из init() в 8.4 -3:45
+            if (browser.equals(BrowserType.FIREFOX)){
+                wd = new FirefoxDriver();
+            } else if (browser.equals(BrowserType.CHROME)) {
+                wd = new ChromeDriver();
+            } else if (browser.equals(BrowserType.IE)) {
+                wd = new InternetExplorerDriver();
+            }
+            wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+            //при time = 0 неявные ожидания выключены
+            wd.get(properties.getProperty("web.baseUrl"));// в 6.10 + создали конфиг. файл local.properties
+        }
+        return wd;
     }
 }
