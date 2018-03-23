@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.testng:testng:6.13.1'
+}
+
+buildscript{ // подключаем плагин no.nils.wsdl2java
+    repositories{
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'no.nils:wsdl2java:0.9'
+    }
+}
+apply plugin: 'no.nils.wsdl2java'
+
+wsdl2java { // настройка использования плагина no.nils.wsdl2java
+    generatedWsdlDir = file("src/main/java")  // сюда будут складываться файлы в формате java, сгенирированные из описания geoipservice.wsdl
+    wsdlDir = file("src/main/resources") // генератор здесь сможет хранить вспомогат. файлы
+    wsdlsToGenerate = [   //  2d-array of wsdls and cxf-parameters
+                          ['src/main/resources/geoipservice.wsdl'],
+    ]
+}
