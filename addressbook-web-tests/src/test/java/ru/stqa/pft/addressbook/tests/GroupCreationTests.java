@@ -10,6 +10,7 @@ public class GroupCreationTests extends TestBase {
         app.getNavigationHelper().gotoGroupPage();
         app.getGroupHelper().createGroup(new GroupData("test1", null, null));
         // null подставляем, потому что хотим оставить в этих полях знач-я по умолчанию (лекция 3.5)
+        // лекция 4.2 1:50
 
     }
 
