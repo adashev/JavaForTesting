@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
+import java.util.Objects;
+
 public class GroupData {
     private final String name;
     private final String header;
@@ -21,5 +23,23 @@ public class GroupData {
 
     public String getFooter() {
         return footer;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        GroupData groupData = (GroupData) obj;
+        return Objects.equals(name, groupData.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "GroupData{"+ "name='" +name+ '\'' +'}';
     }
 }
