@@ -29,6 +29,7 @@ public class GroupData {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
+
         GroupData groupData = (GroupData) obj;
         return Objects.equals(name, groupData.name);
     }
@@ -40,6 +41,6 @@ public class GroupData {
 
     @Override
     public String toString() {
-        return "GroupData{"+ "name='" +name+ '\'' +'}';
+        return "GroupData: "+"name='"+ name + '\'';
     }
 }
