@@ -3,7 +3,7 @@ package ru.stqa.pft.addressbook.model;
 import java.util.Objects;
 
 public class GroupData {
-    private final int id;
+    private int id;
     private final String name;
     private final String header;
     private final String footer;
@@ -43,6 +43,9 @@ public class GroupData {
         return footer;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {
