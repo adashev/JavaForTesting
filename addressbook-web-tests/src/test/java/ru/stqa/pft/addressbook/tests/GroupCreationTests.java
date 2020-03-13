@@ -27,12 +27,11 @@ public class GroupCreationTests extends TestBase {
       }
     }
 
-    Comparator<? super GroupData> byId = new Comparator<GroupData>() {
-      @Override
-      public int compare(GroupData obj1, GroupData obj2) {
-        return Integer.compare(obj1.getId(), obj2.getId());
-      }
-    };
+    Comparator<? super GroupData> byId = (Comparator<GroupData>)
+            (obj1, obj2) -> Integer.compare(obj1.getId(), obj2.getId());
+    // (obj1, obj2) - названия парваметров
+    // Integer.compare(obj1.getId(), obj2.getId()) - тело функции
+
     int max1 = afterList.stream().max(byId).get().getId();
 
     group.setId(max1);
