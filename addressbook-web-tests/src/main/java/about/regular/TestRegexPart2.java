@@ -12,8 +12,9 @@ public class TestRegexPart2 {
     System.out.println(Arrays.toString(words1));
 
     String c = "Hello here hey Dima";
-    c.replace(" ", "-");
+    c.replace(" ", "-");//replace - на вход обычную строку
     System.out.println(c);
-    System.out.println(b.replaceAll("\\d+", "-"));
+    System.out.println(b.replaceAll("\\d+", "-"));//replaceAll - на вход регул. выражение
+    System.out.println(b.replaceFirst("\\d+", "-"));//replaceFirst - на вход регул. выражение
   }
 }
