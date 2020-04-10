@@ -12,7 +12,7 @@ interface OtherInterface { //интерфейсы применяются для 
 class Example implements ISomeInterface {
   @Override
   public void addTwoDigits(int one, int two) {
-    
+
   }
 
   public void somemethod() {
